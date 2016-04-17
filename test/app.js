@@ -7,7 +7,8 @@ var app = require('../lib/app.js');
 describe('microservice-util', function() {
 
   before(function() {
-    app.run();
+    app.prepAddTwo();
+    app.prepAddThree();
   });
 
   describe('when run', function() {
