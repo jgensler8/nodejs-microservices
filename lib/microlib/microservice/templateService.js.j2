@@ -1,0 +1,20 @@
+var jayson = require('jayson');
+
+// create an array of injected services
+var services = [
+{% for injectedService in microlib_injected_services %}
+  jayson.client.http({
+    port: microlib.lookupOrCreate({{ injectedService.name }})
+  }),
+{% endfor %}
+];
+
+// create the current service
+var server = jayson.server({
+  {{ microlib_service_name }} : function(args, callback) {
+    var result = ({{ microlib_service_function  }})(services, args);
+    callback(null, result);
+  }
+});
+
+server.http().listen( process.env.MICROLIB_SERVICE_PORT );
